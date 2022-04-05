@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class Login extends React.Component {
   constructor() {
@@ -32,39 +33,58 @@ class Login extends React.Component {
     }
   }
 
-  handleClick = () => {}
+    handleClick = () => {}
 
-  render() {
-    const { name, gravatarEmail, buttonDisable } = this.state;
-    return (
-      <form>
-        <input
-          data-testid="input-player-name"
-          name="name"
-          placeholder="Nome de Usuário"
-          onChange={ this.handleChange }
-          value={ name }
-        />
+    handleClickButtonSettings = () => {
+      const { history } = this.props;
+      history.push('/settings');
+    }
 
-        <input
-          data-testid="input-gravatar-email"
-          name="gravatarEmail"
-          placeholder="E-mail"
-          onChange={ this.handleChange }
-          value={ gravatarEmail }
-        />
+    render() {
+      const { name, gravatarEmail, buttonDisable } = this.state;
+      return (
+        <form>
+          <input
+            data-testid="input-player-name"
+            name="name"
+            placeholder="Nome de Usuário"
+            onChange={ this.handleChange }
+            value={ name }
+          />
 
-        <button
-          data-testid="btn-play"
-          type="button"
-          onClick={ this.handleClick }
-          disabled={ buttonDisable }
-        >
-          Play
-        </button>
-      </form>
-    );
-  }
+          <input
+            data-testid="input-gravatar-email"
+            name="gravatarEmail"
+            placeholder="E-mail"
+            onChange={ this.handleChange }
+            value={ gravatarEmail }
+          />
+
+          <button
+            data-testid="btn-play"
+            type="button"
+            onClick={ this.handleClick }
+            disabled={ buttonDisable }
+          >
+            Play
+          </button>
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ this.handleClickButtonSettings }
+          >
+            Configurações
+          </button>
+
+        </form>
+      );
+    }
 }
+
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
 
 export default Login;
