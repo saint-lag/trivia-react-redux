@@ -17,7 +17,7 @@ class Game extends Component {
 
   async getGame() {
     const { results } = await fetchGame();
-    // console.log(dataGame);
+    console.log(results);
     this.setState({
       gameQuestions: results,
     });
@@ -64,14 +64,15 @@ class Game extends Component {
             >
               {gameQuestions[questionNumber].question}
             </h3>
-            <div>
+            <div data-testid="answer-options">
               {answers.map((answer, index) => (
                 <button
                   key={ `answer${index}` }
                   type="button"
                   data-testid={ answer === gameQuestions[questionNumber].correct_answer
                     ? 'correct-answer'
-                    : `wrong-answer-${gameQuestions[questionNumber].incorrect_answers.indexOf(answer)}` }
+                    : `wrong-answer-${gameQuestions[questionNumber]
+                      .incorrect_answers.indexOf(answer)}` }
                 >
                   {answer}
                 </button>))}
