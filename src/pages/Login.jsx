@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addToken } from '../actions/index';
 import searchTokenAPI from '../services/searchTokenApi';
-import store from '../store/index';
+// import store from '../store/index';
 
 class Login extends React.Component {
   constructor() {
@@ -39,14 +39,10 @@ class Login extends React.Component {
 
     handleClick = async () => {
       const token = await searchTokenAPI();
-      console.log(await searchTokenAPI());
-
+      // console.log(await searchTokenAPI());
       const { history, updateToken } = this.props;
-      history.push('/game');
-
       updateToken(token);
-
-      console.log(store.getState());
+      history.push('/game');
     }
 
     handleClickButtonSettings = () => {
@@ -56,7 +52,7 @@ class Login extends React.Component {
 
     render() {
       const { name, gravatarEmail, buttonDisable } = this.state;
-      console.log(this.props);
+      // console.log(this.props);
       return (
         <form>
           <input

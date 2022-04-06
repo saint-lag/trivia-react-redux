@@ -14,6 +14,7 @@ export default function player(state = INITIAL_STATE, action) {
     return {
       ...state,
       token: action.payload,
+    };
   case 'ADD_LOGIN':
     return {
       ...state,
