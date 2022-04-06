@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import fetchGame from '../services/fetchGame';
 import searchTokenAPI from '../services/searchTokenApi';
-import { saveToken } from '../actions';
+import { addToken } from '../actions';
 
 class Game extends Component {
   constructor() {
@@ -11,13 +11,13 @@ class Game extends Component {
     this.state = {
       gameQuestions: [], // informações relacionadas a cada uma das perguntas
       questionNumber: 0, // número da questão sendo apresentada
-      // correctAnswers: 0, // número de respostas corretas pelo usuário
     };
     this.getGame = this.getGame.bind(this);
   }
 
   componentDidMount() {
     const { token } = this.props;
+    console.log(token);
     this.getGame(token);
   }
 
@@ -62,6 +62,8 @@ class Game extends Component {
       });
     }
   }
+
+  // nextQuestion = (increase)
 
   suffleArray = (incorrect, correct) => {
     const answers = [...incorrect, correct]
@@ -117,11 +119,11 @@ class Game extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  token: state.player.token,
+  token: state.token,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  saveNewToken: (token) => dispatch(saveToken(token)),
+  saveNewToken: (token) => dispatch(addToken(token)),
 });
 
 Game.propTypes = {
