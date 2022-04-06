@@ -8,17 +8,17 @@ class Game extends Component {
     this.state = {
       gameQuestions: [],
       questionNumber: 0,
-      token: '',
+      token: undefined,
     };
     this.getGame = this.getGame.bind(this);
   }
 
   componentDidMount() {
-    this.getGame();
+    const { token } = this.state;
+    this.getGame(token);
   }
 
-  async getGame() {
-    const { token } = this.state;
+  async getGame(token) {
     const { results, response_code: responseCode } = await fetchGame(token);
     console.log(`API response code: ${responseCode}`);
     const validTokenCode = 0;
@@ -34,7 +34,7 @@ class Game extends Component {
   async getToken() {
     const token = await searchTokenAPI();
     console.log(token);
-    this.getGame();
+    this.getGame(token);
   }
 
   randomNumber = () => {
