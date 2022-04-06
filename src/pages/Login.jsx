@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addToken } from '../actions/index';
+import { addToken, addLogin } from '../actions/index';
 import searchTokenAPI from '../services/searchTokenApi';
 // import store from '../store/index';
 
@@ -40,8 +40,12 @@ class Login extends React.Component {
     handleClick = async () => {
       const token = await searchTokenAPI();
       // console.log(await searchTokenAPI());
-      const { history, updateToken } = this.props;
+      const { history, updateToken, updatePlayer } = this.props;
+      const { gravatarEmail, name } = this.state;
+      const payload = { gravatarEmail, name };
+
       updateToken(token);
+      updatePlayer(payload);
       history.push('/game');
     }
 
@@ -96,6 +100,7 @@ const mapDispatchToProps = (dispatch) => ({
   updateToken: (token) => dispatch(
     addToken(token),
   ),
+  updatePlayer: (payload) => dispatch(addLogin(payload)),
 });
 
 Login.propTypes = {

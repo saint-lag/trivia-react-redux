@@ -4,8 +4,8 @@ export const saveToken = (payload) => ({
   type: SAVE_TOKEN, payload,
 });
 
-export const addLogin = (name, gravatarEmail) => ({
-  type: 'ADD_LOGIN', name, gravatarEmail,
+export const addLogin = (payload) => ({
+  type: 'ADD_LOGIN', payload,
 });
 
 export const addToken = (token) => ({

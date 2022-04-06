@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   score: '',
   gravatarEmail: '',
   token: undefined,
+  picture: '',
 };
 
 export default function player(state = INITIAL_STATE, action) {
@@ -16,10 +17,11 @@ export default function player(state = INITIAL_STATE, action) {
       token: action.payload,
     };
   case 'ADD_LOGIN':
+    console.log(`PLAYER_ACTION: ${action}`);
     return {
       ...state,
-      name: action.name,
-      gravatarEmail: action.gravatarEmail,
+      name: action.payload.name,
+      gravatarEmail: action.payload.gravatarEmail,
     };
   default:
     return state;
