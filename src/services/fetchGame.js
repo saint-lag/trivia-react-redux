@@ -1,6 +1,6 @@
 const fetchGame = async () => {
   const quantity = 5;
-  const token = '314c699538cb9eb13a722d1c5d87caa6dded91caf7af627baf787bd862754066';
+  const token = 'db2d9f52f48eca2797a009b11c9c18747b674db10f470a05664dcd52af4c5b0f';
   const url = `https://opentdb.com/api.php?amount=${quantity}&token=${token}`;
   try {
     const resolve = await fetch(url);
