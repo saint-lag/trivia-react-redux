@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { newAction } from './actions';
+import { addToken } from '../actions/index';
 import searchTokenAPI from '../services/searchTokenApi';
+import store from '../store/index';
 
 class Login extends React.Component {
   constructor() {
@@ -38,13 +39,13 @@ class Login extends React.Component {
 
     handleClick = async () => {
       const token = await searchTokenAPI();
-      console.log(token);
 
-      const { history } = this.props;
+      const { history, updateToken } = this.props;
       history.push('/game');
 
-      const { dispatch } = this.props;
-      dispatch();
+      updateToken(token);
+
+      console.log(store.getState());
     }
 
     handleClickButtonSettings = () => {
@@ -94,14 +95,16 @@ class Login extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-  stateLogin: state.user.state });
+const mapDispatchToProps = (dispatch) => ({
+  updateToken: (token) => dispatch(
+    addToken(token),
+  ),
+});
 
 Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
-  }).isRequired,
-};
+  }),
+}.isRequired;
 
-// export default connect(mapStateToProps, null)(Login);
-export default Login;
+export default connect(null, mapDispatchToProps)(Login);

@@ -1,3 +1,7 @@
-const actionLogin = (state) => ({ type: 'LOGIN', state });
+export const addLogin = (name, gravatarEmail) => ({
+  type: 'ADD_LOGIN', name, gravatarEmail,
+});
 
-export default actionLogin;
+export const addToken = (token) => ({
+  type: 'ADD_TOKEN', token,
+});

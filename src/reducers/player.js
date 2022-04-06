@@ -5,14 +5,13 @@ const INITIAL_STATE = {
   gravatarEmail: '',
 };
 
-export default function user(state = INITIAL_STATE, action) {
+export default function player(state = INITIAL_STATE, action) {
   switch (action.type) {
-  case 'LOGIN':
+  case 'ADD_LOGIN':
     return {
       ...state,
       name: action.name,
       gravatarEmail: action.gravatarEmail,
-      token: action.token,
     };
   default:
     return state;
