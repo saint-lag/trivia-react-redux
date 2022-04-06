@@ -1,4 +1,4 @@
-import { SAVE_TOKEN } from '../actions';
+import { SAVE_TOKEN, ADD_LOGIN, ADD_GRAVATAR_PICTURE } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -16,12 +16,16 @@ export default function player(state = INITIAL_STATE, action) {
       ...state,
       token: action.payload,
     };
-  case 'ADD_LOGIN':
-    console.log(`PLAYER_ACTION: ${action}`);
+  case ADD_LOGIN:
     return {
       ...state,
       name: action.payload.name,
       gravatarEmail: action.payload.gravatarEmail,
+    };
+  case ADD_GRAVATAR_PICTURE:
+    return {
+      ...state,
+      picture: action.picture,
     };
   default:
     return state;
