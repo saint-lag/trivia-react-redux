@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import fetchGame from '../services/fetchGame';
+import searchTokenAPI from '../services/searchTokenApi';
 
 class Game extends Component {
   constructor() {
@@ -7,6 +8,7 @@ class Game extends Component {
     this.state = {
       gameQuestions: [],
       questionNumber: 0,
+      token: '',
     };
     this.getGame = this.getGame.bind(this);
   }
@@ -16,15 +18,23 @@ class Game extends Component {
   }
 
   async getGame() {
-    const { results, response_code: responseCode } = await fetchGame();
-    // console.log(results);
+    const { token } = this.state;
+    const { results, response_code: responseCode } = await fetchGame(token);
+    console.log(`API response code: ${responseCode}`);
     const validTokenCode = 0;
     if (responseCode === validTokenCode) {
       this.setState({
         gameQuestions: results,
       });
-    // return results;
+    } else {
+      this.getToken();
     }
+  }
+
+  async getToken() {
+    const token = await searchTokenAPI();
+    console.log(token);
+    this.getGame();
   }
 
   randomNumber = () => {
