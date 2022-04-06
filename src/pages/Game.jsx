@@ -5,10 +5,13 @@ import searchTokenAPI from '../services/searchTokenApi';
 class Game extends Component {
   constructor() {
     super();
+    // depois de utilizar o token global importálo através
+    // da props e depois atribuir ao token.
     this.state = {
-      gameQuestions: [],
-      questionNumber: 0,
-      token: undefined,
+      gameQuestions: [], // informações relacionadas a cada uma das perguntas
+      questionNumber: 0, // número da questão sendo apresentada
+      token: undefined, // token do usuário -> substituir pelo global
+      correctAnswers: 0, // número de respostas corretas pelo usuário
     };
     this.getGame = this.getGame.bind(this);
   }
@@ -33,13 +36,30 @@ class Game extends Component {
 
   async getToken() {
     const token = await searchTokenAPI();
-    console.log(token);
+    // console.log(token);
     this.getGame(token);
   }
 
   randomNumber = () => {
     const range = 0.5;
     return Math.random() - range;
+  }
+
+  checkAnswer = (userAnswer) => {
+    const { gameQuestions, questionNumber } = this.state;
+    const { correct_answer: correctAnswer } = gameQuestions[questionNumber];
+    if (userAnswer === correctAnswer) {
+      console.log('acertou mizeravi');
+    } else {
+      console.log('errou rude, errou feio');
+    }
+    if (questionNumber === (gameQuestions.length - 1)) {
+      console.log('termina jogo');
+    } else {
+      this.setState({
+        questionNumber: questionNumber + 1,
+      });
+    }
   }
 
   suffleArray = (incorrect, correct) => {
@@ -79,6 +99,7 @@ class Game extends Component {
                 <button
                   key={ `answer${index}` }
                   type="button"
+                  onClick={ () => this.checkAnswer(answer) }
                   data-testid={ answer === gameQuestions[questionNumber].correct_answer
                     ? 'correct-answer'
                     : `wrong-answer-${gameQuestions[questionNumber]
