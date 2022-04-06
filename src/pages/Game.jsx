@@ -4,6 +4,7 @@ import { PropTypes } from 'prop-types';
 import fetchGame from '../services/fetchGame';
 import searchTokenAPI from '../services/searchTokenApi';
 import { addToken } from '../actions';
+import Header from '../components/Header';
 
 class Game extends Component {
   constructor() {
@@ -84,6 +85,7 @@ class Game extends Component {
 
     return (
       <div>
+        <Header />
         {gameQuestions.length > 0
         && (
           <div>
