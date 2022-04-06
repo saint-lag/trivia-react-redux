@@ -16,12 +16,15 @@ class Game extends Component {
   }
 
   async getGame() {
-    const { results } = await fetchGame();
-    console.log(results);
-    this.setState({
-      gameQuestions: results,
-    });
-    return results;
+    const { results, response_code: responseCode } = await fetchGame();
+    // console.log(results);
+    const validTokenCode = 0;
+    if (responseCode === validTokenCode) {
+      this.setState({
+        gameQuestions: results,
+      });
+    // return results;
+    }
   }
 
   randomNumber = () => {
@@ -35,9 +38,6 @@ class Game extends Component {
       .sort(this.randomNumber);
     return answers;
   }
-
-  // https://flaviocopes.com/how-to-shuffle-array-javascript/
-  // list = list.sort(() => Math.random() - 0.5)
 
   render() {
     const { gameQuestions, questionNumber } = this.state;
