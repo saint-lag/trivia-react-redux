@@ -39,6 +39,7 @@ class Login extends React.Component {
 
     handleClick = async () => {
       const token = await searchTokenAPI();
+      console.log(await searchTokenAPI());
 
       const { history, updateToken } = this.props;
       history.push('/game');
