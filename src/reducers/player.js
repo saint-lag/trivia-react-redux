@@ -3,7 +3,7 @@ import { SAVE_TOKEN, ADD_LOGIN, ADD_GRAVATAR_PICTURE } from '../actions';
 const INITIAL_STATE = {
   name: '',
   assertions: '',
-  score: '',
+  score: 0,
   gravatarEmail: '',
   token: undefined,
   picture: '',
