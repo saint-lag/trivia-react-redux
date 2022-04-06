@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { PropTypes } from 'prop-types';
 import fetchGame from '../services/fetchGame';
 import searchTokenAPI from '../services/searchTokenApi';
+import { saveToken } from '../actions';
 
 class Game extends Component {
   constructor() {
     super();
-    // depois de utilizar o token global importálo através
-    // da props e depois atribuir ao token.
     this.state = {
       gameQuestions: [], // informações relacionadas a cada uma das perguntas
       questionNumber: 0, // número da questão sendo apresentada
-      token: undefined, // token do usuário -> substituir pelo global
-      correctAnswers: 0, // número de respostas corretas pelo usuário
+      // correctAnswers: 0, // número de respostas corretas pelo usuário
     };
     this.getGame = this.getGame.bind(this);
   }
 
   componentDidMount() {
-    const { token } = this.state;
+    const { token } = this.props;
     this.getGame(token);
   }
 
@@ -35,8 +35,9 @@ class Game extends Component {
   }
 
   async getToken() {
+    const { saveNewToken } = this.props;
     const token = await searchTokenAPI();
-    // console.log(token);
+    saveNewToken(token);
     this.getGame(token);
   }
 
@@ -115,20 +116,17 @@ class Game extends Component {
   }
 }
 
-export default Game;
+const mapStateToProps = (state) => ({
+  token: state.player.token,
+});
 
-// "response_code":0,
-//    "results":[
-//       {
-//          "category":"Entertainment: Video Games",
-//          "type":"multiple",
-//          "difficulty":"easy",
-//          "question":"What is the first weapon you acquire in Half-Life?",
-//          "correct_answer":"A crowbar",
-//          "incorrect_answers":[
-//             "A pistol",
-//             "The H.E.V suit",
-//             "Your fists"
-//          ]
-//       }
-//    ]
+const mapDispatchToProps = (dispatch) => ({
+  saveNewToken: (token) => dispatch(saveToken(token)),
+});
+
+Game.propTypes = {
+  token: PropTypes.string.isRequired,
+  saveNewToken: PropTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);

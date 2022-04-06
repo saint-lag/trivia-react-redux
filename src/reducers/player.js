@@ -5,6 +5,7 @@ const INITIAL_STATE = {
   assertions: '',
   score: '',
   gravatarEmail: '',
+  token: undefined,
 };
 
 export default function user(state = INITIAL_STATE, action) {
