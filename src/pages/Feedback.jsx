@@ -28,6 +28,7 @@ class Feedback extends Component {
         >
           Play Again
         </button>
+        <button type="button" data-testid="btn-next">Next</button>
       </>
     );
   }
