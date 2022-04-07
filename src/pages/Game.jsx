@@ -5,6 +5,7 @@ import fetchGame from '../services/fetchGame';
 import searchTokenAPI from '../services/searchTokenApi';
 import { addToken } from '../actions';
 import Header from '../components/Header';
+import '../css/game.css';
 
 class Game extends Component {
   constructor() {
