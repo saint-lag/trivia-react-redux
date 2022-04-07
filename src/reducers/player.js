@@ -11,6 +11,7 @@ const INITIAL_STATE = {
   gravatarEmail: '',
   token: undefined,
   picture: '',
+  correctAnswers: 0,
 };
 
 export default function player(state = INITIAL_STATE, action) {
