@@ -17,6 +17,8 @@ class Game extends Component {
       overTime: false,
       timerOn: true,
       questionAnswered: false,
+      currentTime: 30,
+      nextButton: false, // define se o botão next ficará visível para na tela
     };
     this.getGame = this.getGame.bind(this);
   }
@@ -82,8 +84,8 @@ class Game extends Component {
     } else {
       this.setState({
         timerOn: false,
-        // questionNumber: questionNumber + 1,
         questionAnswered: true,
+        nextButton: true,
       });
     }
   }
@@ -107,6 +109,14 @@ class Game extends Component {
     return answers;
   }
 
+  clickNextButton = () => {
+    const { questionNumber } = this.state;
+    this.setState({
+      questionNumber: questionNumber + 1,
+      nextButton: false,
+    });
+  }
+
   isOverTime = (overTime) => {
     if (overTime) {
       this.setState({ overTime: true });
@@ -115,7 +125,7 @@ class Game extends Component {
   }
 
   render() {
-    const { gameQuestions, questionNumber, overTime, timerOn } = this.state;
+    const { gameQuestions, questionNumber, overTime, timerOn, nextButton } = this.state;
     let answers = [];
     if (gameQuestions.length > 0) {
       const {
@@ -158,6 +168,15 @@ class Game extends Component {
                   {answer}
                 </button>))}
             </div>
+            { nextButton && (
+              <button
+                type="button"
+                data-testid="btn-next"
+                onClick={ this.clickNextButton }
+              >
+                Next
+              </button>
+            )}
           </div>
         )}
         <Timer isOverTime={ this.isOverTime } timerOn={ timerOn } />
