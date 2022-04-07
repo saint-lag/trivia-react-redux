@@ -1,4 +1,8 @@
-import { SAVE_TOKEN, ADD_LOGIN, ADD_GRAVATAR_PICTURE } from '../actions';
+import {
+  SAVE_TOKEN,
+  ADD_LOGIN,
+  ADD_GRAVATAR_PICTURE,
+  UPDATE_SCORE } from '../actions/index';
 
 const INITIAL_STATE = {
   name: '',
@@ -7,6 +11,7 @@ const INITIAL_STATE = {
   gravatarEmail: '',
   token: undefined,
   picture: '',
+  correctAnswers: 0,
 };
 
 export default function player(state = INITIAL_STATE, action) {
@@ -27,6 +32,12 @@ export default function player(state = INITIAL_STATE, action) {
       ...state,
       picture: action.picture,
     };
+  case UPDATE_SCORE:
+    return {
+      ...state,
+      score: action.payload + state.score,
+    };
+
   default:
     return state;
   }

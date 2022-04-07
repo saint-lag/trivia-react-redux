@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import fetchGame from '../services/fetchGame';
 import searchTokenAPI from '../services/searchTokenApi';
-import { addToken } from '../actions';
+import { addToken, updateScore } from '../actions';
 import Header from '../components/Header';
 import Timer from '../components/Timer';
+import '../css/game.css';
 
 class Game extends Component {
   constructor() {
@@ -15,6 +16,7 @@ class Game extends Component {
       questionNumber: 0, // número da questão sendo apresentada
       overTime: false,
       timerOn: true,
+      questionAnswered: false,
     };
     this.getGame = this.getGame.bind(this);
   }
@@ -51,9 +53,26 @@ class Game extends Component {
   }
 
   checkAnswer = (userAnswer) => {
-    const { gameQuestions, questionNumber } = this.state;
+    const { gameQuestions, questionNumber, currentTime } = this.state;
     const { correct_answer: correctAnswer } = gameQuestions[questionNumber];
+    const { updateScoreDispatch } = this.props;
+    const scoreDefault = 10;
+    const easy = 1;
+    const medium = 2;
+    const hard = 3;
     if (userAnswer === correctAnswer) {
+      if (gameQuestions[questionNumber].difficulty === 'easy' && currentTime > 0) {
+        const scoreEasy = scoreDefault + (currentTime * easy);
+        updateScoreDispatch(scoreEasy);
+      }
+      if (gameQuestions[questionNumber].difficulty === 'medium' && currentTime > 0) {
+        const scoreMedium = scoreDefault + (currentTime * medium);
+        updateScoreDispatch(scoreMedium);
+      }
+      if (gameQuestions[questionNumber].difficulty === 'hard' && currentTime > 0) {
+        const scoreHard = scoreDefault + (currentTime * hard);
+        updateScoreDispatch(scoreHard);
+      }
       console.log('acertou mizeravi');
     } else {
       console.log('errou rude, errou feio');
@@ -62,12 +81,23 @@ class Game extends Component {
       console.log('termina jogo');
     } else {
       this.setState({
-        questionNumber: questionNumber + 1,
         timerOn: false,
+        // questionNumber: questionNumber + 1,
+        questionAnswered: true,
       });
     }
   }
 
+  selectClass = (answer, correctAnswer) => {
+    const { questionAnswered } = this.state;
+    if (questionAnswered) {
+      const className = answer === correctAnswer
+        ? 'correct-answer'
+        : 'wrong-answer';
+      return className;
+    }
+    return '';
+  }
   // nextQuestion = (increase)
 
   suffleArray = (incorrect, correct) => {
@@ -121,6 +151,9 @@ class Game extends Component {
                     : `wrong-answer-${gameQuestions[questionNumber]
                       .incorrect_answers.indexOf(answer)}` }
                   disabled={ overTime }
+                  className={
+                    this.selectClass(answer, gameQuestions[questionNumber].correct_answer)
+                  }
                 >
                   {answer}
                 </button>))}
@@ -135,15 +168,18 @@ class Game extends Component {
 
 const mapStateToProps = (state) => ({
   token: state.token,
+  score: state.player.score,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   saveNewToken: (token) => dispatch(addToken(token)),
+  updateScoreDispatch: (payload) => dispatch(updateScore(payload)),
 });
 
 Game.propTypes = {
   token: PropTypes.string.isRequired,
   saveNewToken: PropTypes.func.isRequired,
+  updateScoreDispatch: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
