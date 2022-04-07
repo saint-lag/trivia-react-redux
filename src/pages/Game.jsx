@@ -5,6 +5,7 @@ import fetchGame from '../services/fetchGame';
 import searchTokenAPI from '../services/searchTokenApi';
 import { addToken } from '../actions';
 import Header from '../components/Header';
+import Timer from '../components/Timer';
 
 class Game extends Component {
   constructor() {
@@ -12,6 +13,8 @@ class Game extends Component {
     this.state = {
       gameQuestions: [], // informações relacionadas a cada uma das perguntas
       questionNumber: 0, // número da questão sendo apresentada
+      overTime: false,
+      timerOn: true,
     };
     this.getGame = this.getGame.bind(this);
   }
@@ -60,6 +63,7 @@ class Game extends Component {
     } else {
       this.setState({
         questionNumber: questionNumber + 1,
+        timerOn: false,
       });
     }
   }
@@ -73,8 +77,15 @@ class Game extends Component {
     return answers;
   }
 
+  isOverTime = (overTime) => {
+    if (overTime) {
+      this.setState({ overTime: true });
+      console.log('desabilitar botões');
+    }
+  }
+
   render() {
-    const { gameQuestions, questionNumber } = this.state;
+    const { gameQuestions, questionNumber, overTime, timerOn } = this.state;
     let answers = [];
     if (gameQuestions.length > 0) {
       const {
@@ -109,12 +120,14 @@ class Game extends Component {
                     ? 'correct-answer'
                     : `wrong-answer-${gameQuestions[questionNumber]
                       .incorrect_answers.indexOf(answer)}` }
+                  disabled={ overTime }
                 >
                   {answer}
                 </button>))}
             </div>
           </div>
         )}
+        <Timer isOverTime={ this.isOverTime } timerOn={ timerOn } />
       </div>
     );
   }
