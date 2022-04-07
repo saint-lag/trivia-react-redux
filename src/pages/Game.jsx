@@ -5,6 +5,7 @@ import fetchGame from '../services/fetchGame';
 import searchTokenAPI from '../services/searchTokenApi';
 import { addToken, updateScore } from '../actions';
 import Header from '../components/Header';
+import '../css/game.css';
 
 class Game extends Component {
   constructor() {
@@ -12,6 +13,7 @@ class Game extends Component {
     this.state = {
       gameQuestions: [], // informações relacionadas a cada uma das perguntas
       questionNumber: 0, // número da questão sendo apresentada
+      questionAnswered: false,
       currentTime: 30,
     };
     this.getGame = this.getGame.bind(this);
@@ -77,11 +79,22 @@ class Game extends Component {
       console.log('termina jogo');
     } else {
       this.setState({
-        questionNumber: questionNumber + 1,
+        // questionNumber: questionNumber + 1,
+        questionAnswered: true,
       });
     }
   }
 
+  selectClass = (answer, correctAnswer) => {
+    const { questionAnswered } = this.state;
+    if (questionAnswered) {
+      const className = answer === correctAnswer
+        ? 'correct-answer'
+        : 'wrong-answer';
+      return className;
+    }
+    return '';
+  }
   // nextQuestion = (increase)
 
   suffleArray = (incorrect, correct) => {
@@ -127,6 +140,9 @@ class Game extends Component {
                     ? 'correct-answer'
                     : `wrong-answer-${gameQuestions[questionNumber]
                       .incorrect_answers.indexOf(answer)}` }
+                  className={
+                    this.selectClass(answer, gameQuestions[questionNumber].correct_answer)
+                  }
                 >
                   {answer}
                 </button>))}
