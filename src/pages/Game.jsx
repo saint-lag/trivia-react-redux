@@ -54,6 +54,12 @@ class Game extends Component {
     return Math.random() - range;
   }
 
+  getTime = (time) => {
+    this.setState({
+      currentTime: time,
+    });
+  }
+
   checkAnswer = (userAnswer) => {
     const { gameQuestions, questionNumber, currentTime } = this.state;
     const { correct_answer: correctAnswer } = gameQuestions[questionNumber];
@@ -81,6 +87,11 @@ class Game extends Component {
     }
     if (questionNumber === (gameQuestions.length - 1)) {
       console.log('termina jogo');
+      this.setState({
+        timerOn: false,
+        questionAnswered: true,
+        // nextButton: false,
+      });
     } else {
       this.setState({
         timerOn: false,
@@ -88,6 +99,16 @@ class Game extends Component {
         nextButton: true,
       });
     }
+  }
+
+  clickNextButton = () => {
+    const { questionNumber } = this.state;
+    this.setState({
+      questionNumber: questionNumber + 1,
+      nextButton: false,
+      timerOn: true,
+      questionAnswered: false,
+    });
   }
 
   selectClass = (answer, correctAnswer) => {
@@ -100,7 +121,6 @@ class Game extends Component {
     }
     return '';
   }
-  // nextQuestion = (increase)
 
   suffleArray = (incorrect, correct) => {
     const answers = [...incorrect, correct]
@@ -109,23 +129,21 @@ class Game extends Component {
     return answers;
   }
 
-  clickNextButton = () => {
-    const { questionNumber } = this.state;
-    this.setState({
-      questionNumber: questionNumber + 1,
-      nextButton: false,
-    });
-  }
-
   isOverTime = (overTime) => {
     if (overTime) {
       this.setState({ overTime: true });
-      console.log('desabilitar botões');
+      // console.log('desabilitar botões');
     }
   }
 
   render() {
-    const { gameQuestions, questionNumber, overTime, timerOn, nextButton } = this.state;
+    const {
+      gameQuestions,
+      questionNumber,
+      overTime,
+      timerOn,
+      nextButton,
+      questionAnswered } = this.state;
     let answers = [];
     if (gameQuestions.length > 0) {
       const {
@@ -160,13 +178,18 @@ class Game extends Component {
                     ? 'correct-answer'
                     : `wrong-answer-${gameQuestions[questionNumber]
                       .incorrect_answers.indexOf(answer)}` }
-                  disabled={ overTime }
+                  disabled={ overTime || questionAnswered }
                   className={
                     this.selectClass(answer, gameQuestions[questionNumber].correct_answer)
                   }
                 >
                   {answer}
                 </button>))}
+              {!nextButton && <Timer
+                isOverTime={ this.isOverTime }
+                timerOn={ timerOn }
+                getTime={ this.getTime }
+              />}
             </div>
             { nextButton && (
               <button
@@ -179,7 +202,6 @@ class Game extends Component {
             )}
           </div>
         )}
-        <Timer isOverTime={ this.isOverTime } timerOn={ timerOn } />
       </div>
     );
   }
@@ -188,6 +210,7 @@ class Game extends Component {
 const mapStateToProps = (state) => ({
   token: state.token,
   score: state.player.score,
+
 });
 
 const mapDispatchToProps = (dispatch) => ({
