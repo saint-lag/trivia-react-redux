@@ -52,6 +52,12 @@ class Game extends Component {
     return Math.random() - range;
   }
 
+  getTime = (time) => {
+    this.setState({
+      currentTime: time,
+    });
+  }
+
   checkAnswer = (userAnswer) => {
     const { gameQuestions, questionNumber, currentTime } = this.state;
     const { correct_answer: correctAnswer } = gameQuestions[questionNumber];
@@ -160,7 +166,11 @@ class Game extends Component {
             </div>
           </div>
         )}
-        <Timer isOverTime={ this.isOverTime } timerOn={ timerOn } />
+        <Timer
+          isOverTime={ this.isOverTime }
+          timerOn={ timerOn }
+          getTime={ this.getTime }
+        />
       </div>
     );
   }
@@ -169,6 +179,7 @@ class Game extends Component {
 const mapStateToProps = (state) => ({
   token: state.token,
   score: state.player.score,
+
 });
 
 const mapDispatchToProps = (dispatch) => ({

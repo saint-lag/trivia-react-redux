@@ -16,18 +16,24 @@ class Timer extends React.Component {
 
   timer = () => {
     const { time } = this.state;
-    const { isOverTime, timerOn } = this.props;
+    const { isOverTime, timerOn, getTime } = this.props;
     if (time > 0 && timerOn) {
       this.setState((prev) => ({ time: prev.time - 1 }));
     }
     if (time <= 0) {
       isOverTime(true);
+      clearInterval(this.interval);
+      getTime(time);
+    }
+    if (!timerOn) {
+      clearInterval(this.interval);
+      getTime(time);
     }
   }
 
   startTimer = () => {
     const second = 1000;
-    setInterval(this.timer, second);
+    this.interval = setInterval(this.timer, second);
   }
 
   render() {
