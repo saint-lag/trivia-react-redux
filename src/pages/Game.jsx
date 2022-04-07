@@ -137,7 +137,13 @@ class Game extends Component {
   }
 
   render() {
-    const { gameQuestions, questionNumber, overTime, timerOn, nextButton, questionAnswered } = this.state;
+    const {
+      gameQuestions,
+      questionNumber,
+      overTime,
+      timerOn,
+      nextButton,
+      questionAnswered } = this.state;
     let answers = [];
     if (gameQuestions.length > 0) {
       const {
