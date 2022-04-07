@@ -15,6 +15,7 @@ class Game extends Component {
       questionNumber: 0, // número da questão sendo apresentada
       questionAnswered: false,
       currentTime: 30,
+      nextButton: false, // define se o botão next ficará visível para na tela
     };
     this.getGame = this.getGame.bind(this);
   }
@@ -79,8 +80,8 @@ class Game extends Component {
       console.log('termina jogo');
     } else {
       this.setState({
-        // questionNumber: questionNumber + 1,
         questionAnswered: true,
+        nextButton: true,
       });
     }
   }
@@ -104,8 +105,16 @@ class Game extends Component {
     return answers;
   }
 
+  clickNextButton = () => {
+    const { questionNumber } = this.state;
+    this.setState({
+      questionNumber: questionNumber + 1,
+      nextButton: false,
+    });
+  }
+
   render() {
-    const { gameQuestions, questionNumber } = this.state;
+    const { gameQuestions, questionNumber, nextButton } = this.state;
     let answers = [];
     if (gameQuestions.length > 0) {
       const {
@@ -147,6 +156,15 @@ class Game extends Component {
                   {answer}
                 </button>))}
             </div>
+            { nextButton && (
+              <button
+                type="button"
+                data-testid="btn-next"
+                onClick={ this.clickNextButton }
+              >
+                Next
+              </button>
+            )}
           </div>
         )}
       </div>
