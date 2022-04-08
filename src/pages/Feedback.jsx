@@ -3,6 +3,11 @@ import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 
 class Feedback extends Component {
+  handlePlayAgainBtn = () => {
+    const { history } = this.props;
+    history.push('/');
+  };
+
   handleClick() {
     const { history } = this.props;
     history.push('/ranking');
@@ -18,12 +23,21 @@ class Feedback extends Component {
       <>
         <span data-testid="feedback-text">{message}</span>
         <button
+          type="button"
+          data-testid="btn-play-again"
+          onClick={ () => this.handlePlayAgainBtn() }
+        >
+          Play Again
+        </button>
+        <button
           data-testid="btn-ranking"
           type="button"
           onClick={ () => this.handleClick() }
         >
           Ranking
-
+        </button>
+        <button type="button" data-testid="btn-next">
+          Next
         </button>
       </>
     );
@@ -35,10 +49,10 @@ const mapStateToProps = (state) => ({
 });
 
 Feedback.propTypes = {
-  numberCorrectAnswers: PropTypes.number,
+  numberCorrectAnswers: PropTypes.number.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
-  }),
-}.isRequired;
+  }).isRequired,
+};
 
 export default connect(mapStateToProps, null)(Feedback);
