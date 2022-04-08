@@ -2,11 +2,12 @@ import {
   SAVE_TOKEN,
   ADD_LOGIN,
   ADD_GRAVATAR_PICTURE,
-  UPDATE_SCORE } from '../actions/index';
+  UPDATE_SCORE,
+} from '../actions/index';
 
 const INITIAL_STATE = {
   name: '',
-  assertions: '',
+  assertions: 0,
   score: 0,
   gravatarEmail: '',
   token: undefined,

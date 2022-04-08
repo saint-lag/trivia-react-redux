@@ -21,13 +21,13 @@ class Game extends Component {
       currentTime: 30,
       nextButton: false, // define se o botão next ficará visível para na tela
       redirectToFeedback: false,
+      totalRightAnswer: 0,
     };
     this.getGame = this.getGame.bind(this);
   }
 
   componentDidMount() {
     const { token } = this.props;
-    console.log(token);
     this.getGame(token);
   }
 
@@ -70,6 +70,7 @@ class Game extends Component {
     const easy = 1;
     const medium = 2;
     const hard = 3;
+
     if (userAnswer === correctAnswer) {
       if (gameQuestions[questionNumber].difficulty === 'easy' && currentTime > 0) {
         const scoreEasy = scoreDefault + (currentTime * easy);
@@ -82,6 +83,11 @@ class Game extends Component {
       if (gameQuestions[questionNumber].difficulty === 'hard' && currentTime > 0) {
         const scoreHard = scoreDefault + (currentTime * hard);
         updateScoreDispatch(scoreHard);
+      }
+      if (gameQuestions[questionNumber].correct_answer) {
+        this.setState((prevState) => ({
+          totalRightAnswer: prevState.totalRightAnswer + 1,
+        }));
       }
       console.log('acertou mizeravi');
     } else {
@@ -115,6 +121,7 @@ class Game extends Component {
 
   selectClass = (answer, correctAnswer) => {
     const { questionAnswered } = this.state;
+
     if (questionAnswered) {
       const className = answer === correctAnswer
         ? 'correct-answer'
@@ -222,6 +229,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   saveNewToken: (token) => dispatch(addToken(token)),
   updateScoreDispatch: (payload) => dispatch(updateScore(payload)),
+
 });
 
 Game.propTypes = {
