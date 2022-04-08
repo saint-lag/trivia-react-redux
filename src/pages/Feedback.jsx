@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import Header from '../components/Header';
+import { updateCorrectAnswers } from '../actions';
 
 class Feedback extends Component {
   handlePlayAgainBtn = () => {
-    const { history } = this.props;
+    const { history, setAnsweredToZero } = this.props;
+    setAnsweredToZero(0);
     history.push('/');
   };
 
@@ -15,9 +17,9 @@ class Feedback extends Component {
   }
 
   render() {
-    const { numberCorrectAnswers, score } = this.props;
+    const { assertions, score } = this.props;
     const minimalCorrectAnswers = 3;
-    const message = numberCorrectAnswers < minimalCorrectAnswers
+    const message = assertions < minimalCorrectAnswers
       ? 'Could be better...'
       : 'Well Done!';
     return (
@@ -31,7 +33,7 @@ class Feedback extends Component {
         <label htmlFor="total-questions">
           Você acertou:
           <h2 id="total-questions" data-testid="feedback-total-question">
-            { numberCorrectAnswers }
+            { assertions }
           </h2>
         </label>
         <button
@@ -48,7 +50,11 @@ class Feedback extends Component {
         >
           Ranking
         </button>
-        <button type="button" data-testid="btn-next">
+        <button
+          type="button"
+          data-testid="btn-next"
+          // onClick={ setAnsweredToZero(0) }
+        >
           Next
         </button>
       </>
@@ -57,17 +63,21 @@ class Feedback extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  numberCorrectAnswers: state.player.correctAnswers,
+  assertions: state.player.assertions,
   score: state.player.score,
+});
 
+const mapDispatchToProps = (dispatch) => ({
+  setAnsweredToZero: (payload) => dispatch(updateCorrectAnswers(payload)),
 });
 
 Feedback.propTypes = {
-  numberCorrectAnswers: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  setAnsweredToZero: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, null)(Feedback);
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);

@@ -5,6 +5,7 @@ export const ADD_GRAVATAR_PICTURE = 'ADD_GRAVATAR_PICTURE';
 export const ADD_LOGIN = 'ADD_LOGIN';
 export const ADD_TOKEN = 'ADD_TOKEN';
 export const UPDATE_SCORE = 'UPDATE_SCORE';
+export const UPDATE_CORRECT_ANSWERS = 'UPDATE_CORRECT_ANSWERS';
 
 export const saveToken = (payload) => ({
   type: SAVE_TOKEN, payload,
@@ -24,6 +25,10 @@ export const addGravatarPicture = (picture) => ({
 
 export const updateScore = (payload) => ({
   type: UPDATE_SCORE, payload,
+});
+
+export const updateCorrectAnswers = (payload) => ({
+  type: UPDATE_CORRECT_ANSWERS, payload,
 });
 
 // export function fetchPicture() {

@@ -3,6 +3,7 @@ import {
   ADD_LOGIN,
   ADD_GRAVATAR_PICTURE,
   UPDATE_SCORE,
+  UPDATE_CORRECT_ANSWERS,
 } from '../actions/index';
 
 const INITIAL_STATE = {
@@ -10,9 +11,7 @@ const INITIAL_STATE = {
   assertions: 0,
   score: 0,
   gravatarEmail: '',
-  token: undefined,
   picture: '',
-  correctAnswers: 0,
 };
 
 export default function player(state = INITIAL_STATE, action) {
@@ -38,7 +37,11 @@ export default function player(state = INITIAL_STATE, action) {
       ...state,
       score: action.payload + state.score,
     };
-
+  case UPDATE_CORRECT_ANSWERS:
+    return {
+      ...state,
+      assertions: action.payload,
+    };
   default:
     return state;
   }

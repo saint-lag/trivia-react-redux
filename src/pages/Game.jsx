@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import fetchGame from '../services/fetchGame';
 import searchTokenAPI from '../services/searchTokenApi';
-import { addToken, updateScore } from '../actions';
+import { addToken, updateScore, updateCorrectAnswers } from '../actions';
 import Header from '../components/Header';
 import Timer from '../components/Timer';
 import '../css/game.css';
@@ -21,7 +21,7 @@ class Game extends Component {
       currentTime: 30,
       nextButton: false, // define se o botão next ficará visível para na tela
       redirectToFeedback: false,
-      totalRightAnswer: 0,
+      // totalRightAnswer: 0,
     };
     this.getGame = this.getGame.bind(this);
   }
@@ -65,13 +65,14 @@ class Game extends Component {
   checkAnswer = (userAnswer) => {
     const { gameQuestions, questionNumber, currentTime } = this.state;
     const { correct_answer: correctAnswer } = gameQuestions[questionNumber];
-    const { updateScoreDispatch } = this.props;
+    const { updateScoreDispatch, assertions, defineNumberCorrectAnswer } = this.props;
     const scoreDefault = 10;
     const easy = 1;
     const medium = 2;
     const hard = 3;
 
     if (userAnswer === correctAnswer) {
+      defineNumberCorrectAnswer(assertions + 1);
       if (gameQuestions[questionNumber].difficulty === 'easy' && currentTime > 0) {
         const scoreEasy = scoreDefault + (currentTime * easy);
         updateScoreDispatch(scoreEasy);
@@ -84,11 +85,11 @@ class Game extends Component {
         const scoreHard = scoreDefault + (currentTime * hard);
         updateScoreDispatch(scoreHard);
       }
-      if (gameQuestions[questionNumber].correct_answer) {
-        this.setState((prevState) => ({
-          totalRightAnswer: prevState.totalRightAnswer + 1,
-        }));
-      }
+      // if (gameQuestions[questionNumber].correct_answer) {
+      //   this.setState((prevState) => ({
+      //     totalRightAnswer: prevState.totalRightAnswer + 1,
+      //   }));
+      // }
       console.log('acertou mizeravi');
     } else {
       console.log('errou rude, errou feio');
@@ -223,19 +224,22 @@ class Game extends Component {
 const mapStateToProps = (state) => ({
   token: state.token,
   score: state.player.score,
+  assertions: state.player.assertions,
 
 });
 
 const mapDispatchToProps = (dispatch) => ({
   saveNewToken: (token) => dispatch(addToken(token)),
   updateScoreDispatch: (payload) => dispatch(updateScore(payload)),
-
+  defineNumberCorrectAnswer: (payload) => dispatch(updateCorrectAnswers(payload)),
 });
 
 Game.propTypes = {
   token: PropTypes.string.isRequired,
   saveNewToken: PropTypes.func.isRequired,
   updateScoreDispatch: PropTypes.func.isRequired,
+  assertions: PropTypes.number.isRequired,
+  defineNumberCorrectAnswer: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

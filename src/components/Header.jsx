@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 class Header extends React.Component {
   render() {
     const { name, score, picture } = this.props;
-    console.log(`name: ${picture}`);
+    // console.log(`name: ${picture}`);
     return (
       <header>
         <div>
