@@ -14,7 +14,7 @@ class Feedback extends Component {
   }
 
   render() {
-    const { numberCorrectAnswers } = this.props;
+    const { numberCorrectAnswers, score } = this.props;
     const minimalCorrectAnswers = 3;
     const message = numberCorrectAnswers < minimalCorrectAnswers
       ? 'Could be better...'
@@ -22,6 +22,16 @@ class Feedback extends Component {
     return (
       <>
         <span data-testid="feedback-text">{message}</span>
+        <label htmlFor="total-score">
+          Sua pontuação:
+          <h2 id="total-score" data-testid="feedback-total-score">{ score }</h2>
+        </label>
+        <label htmlFor="total-questions">
+          Você acertou:
+          <h2 id="total-questions" data-testid="feedback-total-question">
+            { numberCorrectAnswers }
+          </h2>
+        </label>
         <button
           type="button"
           data-testid="btn-play-again"
@@ -46,10 +56,13 @@ class Feedback extends Component {
 
 const mapStateToProps = (state) => ({
   numberCorrectAnswers: state.player.correctAnswers,
+  score: state.player.score,
+
 });
 
 Feedback.propTypes = {
   numberCorrectAnswers: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,

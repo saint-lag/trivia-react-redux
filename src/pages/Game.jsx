@@ -27,7 +27,6 @@ class Game extends Component {
 
   componentDidMount() {
     const { token } = this.props;
-    console.log(token);
     this.getGame(token);
   }
 
@@ -62,7 +61,7 @@ class Game extends Component {
     });
   }
 
-  checkAnswer = (userAnswer) => {
+  checkAnswer = async (userAnswer) => {
     const { gameQuestions, questionNumber, currentTime } = this.state;
     const { correct_answer: correctAnswer } = gameQuestions[questionNumber];
     const { updateScoreDispatch } = this.props;
@@ -228,6 +227,7 @@ Game.propTypes = {
   token: PropTypes.string.isRequired,
   saveNewToken: PropTypes.func.isRequired,
   updateScoreDispatch: PropTypes.func.isRequired,
+
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
