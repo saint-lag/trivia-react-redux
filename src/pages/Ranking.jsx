@@ -29,14 +29,10 @@ class Ranking extends React.Component {
             <div key={ `ranking${index}` }>
               <img src={ game.picture } alt={ `Foto do ${game.name}` } />
               <span data-testid={ `player-name-${index}` }>
-                {' '}
                 {game.name}
-                {' '}
               </span>
               <span data-testid={ `player-score-${index}` }>
-                {' '}
                 {game.score}
-                {' '}
               </span>
             </div>))}
         </section>
