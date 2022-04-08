@@ -8,6 +8,11 @@ class Feedback extends Component {
     history.push('/');
   };
 
+  handleClick() {
+    const { history } = this.props;
+    history.push('/ranking');
+  }
+
   render() {
     const { numberCorrectAnswers } = this.props;
     const minimalCorrectAnswers = 3;
@@ -16,11 +21,7 @@ class Feedback extends Component {
       : 'Well Done!';
     return (
       <>
-        <span
-          data-testid="feedback-text"
-        >
-          {message}
-        </span>
+        <span data-testid="feedback-text">{message}</span>
         <button
           type="button"
           data-testid="btn-play-again"
@@ -28,7 +29,16 @@ class Feedback extends Component {
         >
           Play Again
         </button>
-        <button type="button" data-testid="btn-next">Next</button>
+        <button
+          data-testid="btn-ranking"
+          type="button"
+          onClick={ () => this.handleClick() }
+        >
+          Ranking
+        </button>
+        <button type="button" data-testid="btn-next">
+          Next
+        </button>
       </>
     );
   }
