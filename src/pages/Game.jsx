@@ -117,6 +117,7 @@ class Game extends Component {
       nextButton: false,
       timerOn: true,
       questionAnswered: false,
+      overTime: false,
     });
   }
 
@@ -140,9 +141,25 @@ class Game extends Component {
   }
 
   isOverTime = (overTime) => {
+    const { questionNumber, gameQuestions } = this.state;
     if (overTime) {
-      this.setState({ overTime: true });
       // console.log('desabilitar botões');
+      if (questionNumber === (gameQuestions.length - 1)) {
+        console.log('termina jogo');
+        this.setState({
+          overTime: true,
+          timerOn: false,
+          questionAnswered: true,
+          redirectToFeedback: true,
+        });
+      } else {
+        this.setState({
+          overTime: true,
+          timerOn: false,
+          questionAnswered: true,
+          nextButton: true,
+        });
+      }
     }
   }
 
