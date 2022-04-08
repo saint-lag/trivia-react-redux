@@ -21,7 +21,6 @@ class Game extends Component {
       currentTime: 30,
       nextButton: false, // define se o botão next ficará visível para na tela
       redirectToFeedback: false,
-      // totalRightAnswer: 0,
     };
     this.getGame = this.getGame.bind(this);
   }
@@ -36,12 +35,8 @@ class Game extends Component {
     console.log(`API response code: ${responseCode}`);
     const validTokenCode = 0;
     if (responseCode === validTokenCode) {
-      this.setState({
-        gameQuestions: results,
-      });
-    } else {
-      this.getToken();
-    }
+      this.setState({ gameQuestions: results });
+    } else { this.getToken(); }
   }
 
   async getToken() {
@@ -57,9 +52,7 @@ class Game extends Component {
   }
 
   getTime = (time) => {
-    this.setState({
-      currentTime: time,
-    });
+    this.setState({ currentTime: time });
   }
 
   checkAnswer = (userAnswer) => {
@@ -70,7 +63,6 @@ class Game extends Component {
     const easy = 1;
     const medium = 2;
     const hard = 3;
-
     if (userAnswer === correctAnswer) {
       defineNumberCorrectAnswer(assertions + 1);
       if (gameQuestions[questionNumber].difficulty === 'easy' && currentTime > 0) {
@@ -85,14 +77,6 @@ class Game extends Component {
         const scoreHard = scoreDefault + (currentTime * hard);
         updateScoreDispatch(scoreHard);
       }
-      // if (gameQuestions[questionNumber].correct_answer) {
-      //   this.setState((prevState) => ({
-      //     totalRightAnswer: prevState.totalRightAnswer + 1,
-      //   }));
-      // }
-      console.log('acertou mizeravi');
-    } else {
-      console.log('errou rude, errou feio');
     }
     if (questionNumber === (gameQuestions.length - 1)) {
       console.log('termina jogo');
@@ -143,7 +127,6 @@ class Game extends Component {
   isOverTime = (overTime) => {
     const { questionNumber, gameQuestions } = this.state;
     if (overTime) {
-      // console.log('desabilitar botões');
       if (questionNumber === (gameQuestions.length - 1)) {
         console.log('termina jogo');
         this.setState({
