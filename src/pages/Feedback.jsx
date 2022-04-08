@@ -5,6 +5,25 @@ import Header from '../components/Header';
 import { updateCorrectAnswers } from '../actions';
 
 class Feedback extends Component {
+  componentDidMount() {
+    this.saveOnStorage();
+  }
+
+  saveOnStorage = () => {
+    const { name, score, picture } = this.props;
+    const ranking = JSON.parse(localStorage.getItem('ranking')) || [];
+    console.log(ranking);
+    const tempObj = {
+      name,
+      score,
+      picture,
+    };
+    const newRanking = [...ranking, tempObj];
+    console.log(newRanking);
+    console.log(JSON.stringify(newRanking));
+    localStorage.setItem('ranking', JSON.stringify(newRanking));
+  }
+
   handlePlayAgainBtn = () => {
     const { history, setAnsweredToZero } = this.props;
     setAnsweredToZero(0);
@@ -64,7 +83,9 @@ class Feedback extends Component {
 
 const mapStateToProps = (state) => ({
   assertions: state.player.assertions,
+  name: state.player.name,
   score: state.player.score,
+  picture: state.player.picture,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -74,6 +95,8 @@ const mapDispatchToProps = (dispatch) => ({
 Feedback.propTypes = {
   assertions: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  picture: PropTypes.string.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
