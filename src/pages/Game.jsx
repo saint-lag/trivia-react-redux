@@ -32,7 +32,6 @@ class Game extends Component {
 
   async getGame(token) {
     const { results, response_code: responseCode } = await fetchGame(token);
-    console.log(`API response code: ${responseCode}`);
     const validTokenCode = 0;
     if (responseCode === validTokenCode) {
       this.setState({ gameQuestions: results });
@@ -82,7 +81,6 @@ class Game extends Component {
       this.calculateAndUpdateScore();
     }
     if (questionNumber === (gameQuestions.length - 1)) {
-      console.log('termina jogo');
       this.setState({
         timerOn: false,
         questionAnswered: true,
@@ -131,7 +129,6 @@ class Game extends Component {
     const { questionNumber, gameQuestions } = this.state;
     if (overTime) {
       if (questionNumber === (gameQuestions.length - 1)) {
-        console.log('termina jogo');
         this.setState({
           overTime: true,
           timerOn: false,
