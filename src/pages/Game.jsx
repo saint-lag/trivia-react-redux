@@ -21,6 +21,7 @@ class Game extends Component {
       currentTime: 30,
       nextButton: false, // define se o botão next ficará visível para na tela
       redirectToFeedback: false,
+      arrayOfAnswers: [],
     };
     this.getGame = this.getGame.bind(this);
   }
@@ -32,9 +33,17 @@ class Game extends Component {
 
   async getGame(token) {
     const { results, response_code: responseCode } = await fetchGame(token);
+    console.log(results);
     const validTokenCode = 0;
     if (responseCode === validTokenCode) {
-      this.setState({ gameQuestions: results });
+      const arrayOfAnswers = [];
+      console.log(this.randomNumber);
+      results.forEach((element, index) => {
+        const answers = [element.correct_answer, ...element.incorrect_answers];
+        arrayOfAnswers[index] = answers.sort(this.randomNumber);
+      });
+      console.log(arrayOfAnswers);
+      this.setState({ gameQuestions: results, arrayOfAnswers });
     } else { this.getToken(); }
   }
 
@@ -124,12 +133,12 @@ class Game extends Component {
     return '';
   }
 
-  suffleArray = (incorrect, correct) => {
-    const answers = [...incorrect, correct]
-      .sort(this.randomNumber)
-      .sort(this.randomNumber);
-    return answers;
-  }
+  // suffleArray = (incorrect, correct) => {
+  //   const answers = [...incorrect, correct]
+  //     .sort(this.randomNumber)
+  //     .sort(this.randomNumber);
+  //   return answers;
+  // }
 
   isOverTime = (overTime) => {
     if (overTime) {
@@ -145,15 +154,15 @@ class Game extends Component {
       timerOn,
       nextButton,
       questionAnswered,
-      redirectToFeedback } = this.state;
-    let answers = [];
-    if (gameQuestions.length > 0) {
-      const {
-        incorrect_answers: incorrectAnswers,
-        correct_answer: correctAnswer } = gameQuestions[questionNumber];
-      answers = this.suffleArray(incorrectAnswers, correctAnswer);
-    }
-
+      redirectToFeedback,
+      arrayOfAnswers } = this.state;
+    // const answers = [];
+    // if (gameQuestions.length > 0) {
+    //   const {
+    //     incorrect_answers: incorrectAnswers,
+    //     correct_answer: correctAnswer } = gameQuestions[questionNumber];
+    //   answers = this.suffleArray(incorrectAnswers, correctAnswer);
+    // }
     return (
       <div>
         {redirectToFeedback && <Redirect to="/feedback" />}
@@ -167,7 +176,7 @@ class Game extends Component {
               {gameQuestions[questionNumber].question}
             </h3>
             <div data-testid="answer-options">
-              {answers.map((answer, index) => (
+              {arrayOfAnswers[questionNumber].map((answer, index) => (
                 <button
                   key={ `answer${index}` }
                   type="button"
