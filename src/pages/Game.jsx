@@ -133,13 +133,6 @@ class Game extends Component {
     return '';
   }
 
-  // suffleArray = (incorrect, correct) => {
-  //   const answers = [...incorrect, correct]
-  //     .sort(this.randomNumber)
-  //     .sort(this.randomNumber);
-  //   return answers;
-  // }
-
   isOverTime = (overTime) => {
     if (overTime) {
       this.handleEndOfAnswering();
@@ -156,13 +149,6 @@ class Game extends Component {
       questionAnswered,
       redirectToFeedback,
       arrayOfAnswers } = this.state;
-    // const answers = [];
-    // if (gameQuestions.length > 0) {
-    //   const {
-    //     incorrect_answers: incorrectAnswers,
-    //     correct_answer: correctAnswer } = gameQuestions[questionNumber];
-    //   answers = this.suffleArray(incorrectAnswers, correctAnswer);
-    // }
     return (
       <div>
         {redirectToFeedback && <Redirect to="/feedback" />}
