@@ -55,28 +55,31 @@ class Game extends Component {
     this.setState({ currentTime: time });
   }
 
-  checkAnswer = (userAnswer) => {
+  calculateAndUpdateScore = () => {
     const { gameQuestions, questionNumber, currentTime } = this.state;
-    const { correct_answer: correctAnswer } = gameQuestions[questionNumber];
-    const { updateScoreDispatch, assertions, defineNumberCorrectAnswer } = this.props;
+    const { updateScoreDispatch } = this.props;
     const scoreDefault = 10;
     const easy = 1;
     const medium = 2;
     const hard = 3;
+    let score = 0;
+    if (gameQuestions[questionNumber].difficulty === 'easy' && currentTime > 0) {
+      score = scoreDefault + (currentTime * easy);
+    } else if (gameQuestions[questionNumber].difficulty === 'medium' && currentTime > 0) {
+      score = scoreDefault + (currentTime * medium);
+    } else if (gameQuestions[questionNumber].difficulty === 'hard' && currentTime > 0) {
+      score = scoreDefault + (currentTime * hard);
+    }
+    updateScoreDispatch(score);
+  }
+
+  checkAnswer = (userAnswer) => {
+    const { gameQuestions, questionNumber } = this.state;
+    const { correct_answer: correctAnswer } = gameQuestions[questionNumber];
+    const { assertions, defineNumberCorrectAnswer } = this.props;
     if (userAnswer === correctAnswer) {
       defineNumberCorrectAnswer(assertions + 1);
-      if (gameQuestions[questionNumber].difficulty === 'easy' && currentTime > 0) {
-        const scoreEasy = scoreDefault + (currentTime * easy);
-        updateScoreDispatch(scoreEasy);
-      }
-      if (gameQuestions[questionNumber].difficulty === 'medium' && currentTime > 0) {
-        const scoreMedium = scoreDefault + (currentTime * medium);
-        updateScoreDispatch(scoreMedium);
-      }
-      if (gameQuestions[questionNumber].difficulty === 'hard' && currentTime > 0) {
-        const scoreHard = scoreDefault + (currentTime * hard);
-        updateScoreDispatch(scoreHard);
-      }
+      this.calculateAndUpdateScore();
     }
     if (questionNumber === (gameQuestions.length - 1)) {
       console.log('termina jogo');
