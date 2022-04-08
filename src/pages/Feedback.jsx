@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
+import Header from '../components/Header';
 
 class Feedback extends Component {
   handlePlayAgainBtn = () => {
@@ -21,6 +22,7 @@ class Feedback extends Component {
       : 'Well Done!';
     return (
       <>
+        <Header />
         <h1 data-testid="feedback-text">{message}</h1>
         <label htmlFor="total-score">
           Sua pontuação:
