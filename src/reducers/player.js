@@ -2,7 +2,8 @@ import {
   SAVE_TOKEN,
   ADD_LOGIN,
   ADD_GRAVATAR_PICTURE,
-  UPDATE_SCORE } from '../actions/index';
+  UPDATE_SCORE,
+  UPDATE_CORRECT_ANSWERS } from '../actions/index';
 
 const INITIAL_STATE = {
   name: '',
@@ -37,7 +38,11 @@ export default function player(state = INITIAL_STATE, action) {
       ...state,
       score: action.payload + state.score,
     };
-
+  case UPDATE_CORRECT_ANSWERS:
+    return {
+      ...state,
+      correctAnswers: action.payload,
+    };
   default:
     return state;
   }
