@@ -3,12 +3,11 @@ import {
   ADD_LOGIN,
   ADD_GRAVATAR_PICTURE,
   UPDATE_SCORE,
-  RIGHT_ANSWERS,
 } from '../actions/index';
 
 const INITIAL_STATE = {
   name: '',
-  assertions: '',
+  assertions: 0,
   score: 0,
   gravatarEmail: '',
   token: undefined,
@@ -39,8 +38,6 @@ export default function player(state = INITIAL_STATE, action) {
       ...state,
       score: action.payload + state.score,
     };
-  case RIGHT_ANSWERS:
-    return { ...state, assertions: action.payload };
 
   default:
     return state;

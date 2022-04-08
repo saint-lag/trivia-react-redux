@@ -21,7 +21,7 @@ class Feedback extends Component {
       : 'Well Done!';
     return (
       <>
-        <span data-testid="feedback-text">{message}</span>
+        <h1 data-testid="feedback-text">{message}</h1>
         <label htmlFor="total-score">
           Sua pontuação:
           <h2 id="total-score" data-testid="feedback-total-score">{ score }</h2>
