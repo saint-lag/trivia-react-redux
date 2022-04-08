@@ -147,6 +147,8 @@ describe('18 - [TELA DE RANKING] Crie o conteúdo da tela de _ranking_', () => {
     });
 
     cy.get(RANKING_PLAYERS_NAME_SELECTOR).each(($el, $index) => {
+      console.log($el.text());
+      console.log(ranking[$index]);
       expect($el.text()).to.be.eq(ranking[$index]);
     });
   });

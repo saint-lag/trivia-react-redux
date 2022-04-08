@@ -26,6 +26,8 @@ export default function player(state = INITIAL_STATE, action) {
       ...state,
       name: action.payload.name,
       gravatarEmail: action.payload.gravatarEmail,
+      score: 0,
+      assertions: 0,
     };
   case ADD_GRAVATAR_PICTURE:
     return {

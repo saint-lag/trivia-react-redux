@@ -2,12 +2,28 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import Header from '../components/Header';
-import { updateCorrectAnswers } from '../actions';
+// import { updateCorrectAnswers } from '../actions';
 
 class Feedback extends Component {
+  componentDidMount() {
+    this.saveOnStorage();
+  }
+
+  saveOnStorage = () => {
+    const { name, score, picture } = this.props;
+    const ranking = JSON.parse(localStorage.getItem('ranking')) || [];
+    const tempObj = {
+      name,
+      score,
+      picture,
+    };
+    const newRanking = [...ranking, tempObj];
+    localStorage.setItem('ranking', JSON.stringify(newRanking));
+  }
+
   handlePlayAgainBtn = () => {
-    const { history, setAnsweredToZero } = this.props;
-    setAnsweredToZero(0);
+    const { history } = this.props;
+    // setAnsweredToZero(0);
     history.push('/');
   };
 
@@ -64,20 +80,24 @@ class Feedback extends Component {
 
 const mapStateToProps = (state) => ({
   assertions: state.player.assertions,
+  name: state.player.name,
   score: state.player.score,
+  picture: state.player.picture,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  setAnsweredToZero: (payload) => dispatch(updateCorrectAnswers(payload)),
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   setAnsweredToZero: (payload) => dispatch(updateCorrectAnswers(payload)),
+// });
 
 Feedback.propTypes = {
   assertions: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  picture: PropTypes.string.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
-  setAnsweredToZero: PropTypes.func.isRequired,
+  // setAnsweredToZero: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
+export default connect(mapStateToProps, null)(Feedback);
