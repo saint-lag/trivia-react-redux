@@ -72,6 +72,25 @@ class Game extends Component {
     updateScoreDispatch(score);
   }
 
+  handleEndOfAnswering = () => {
+    const { questionNumber, gameQuestions } = this.state;
+    if (questionNumber === (gameQuestions.length - 1)) {
+      this.setState({
+        overTime: true,
+        timerOn: false,
+        questionAnswered: true,
+        redirectToFeedback: true,
+      });
+    } else {
+      this.setState({
+        overTime: true,
+        timerOn: false,
+        questionAnswered: true,
+        nextButton: true,
+      });
+    }
+  }
+
   checkAnswer = (userAnswer) => {
     const { gameQuestions, questionNumber } = this.state;
     const { correct_answer: correctAnswer } = gameQuestions[questionNumber];
@@ -80,19 +99,7 @@ class Game extends Component {
       defineNumberCorrectAnswer(assertions + 1);
       this.calculateAndUpdateScore();
     }
-    if (questionNumber === (gameQuestions.length - 1)) {
-      this.setState({
-        timerOn: false,
-        questionAnswered: true,
-        redirectToFeedback: true,
-      });
-    } else {
-      this.setState({
-        timerOn: false,
-        questionAnswered: true,
-        nextButton: true,
-      });
-    }
+    this.handleEndOfAnswering();
   }
 
   clickNextButton = () => {
@@ -108,7 +115,6 @@ class Game extends Component {
 
   selectClass = (answer, correctAnswer) => {
     const { questionAnswered } = this.state;
-
     if (questionAnswered) {
       const className = answer === correctAnswer
         ? 'correct-answer'
@@ -126,23 +132,8 @@ class Game extends Component {
   }
 
   isOverTime = (overTime) => {
-    const { questionNumber, gameQuestions } = this.state;
     if (overTime) {
-      if (questionNumber === (gameQuestions.length - 1)) {
-        this.setState({
-          overTime: true,
-          timerOn: false,
-          questionAnswered: true,
-          redirectToFeedback: true,
-        });
-      } else {
-        this.setState({
-          overTime: true,
-          timerOn: false,
-          questionAnswered: true,
-          nextButton: true,
-        });
-      }
+      this.handleEndOfAnswering();
     }
   }
 
