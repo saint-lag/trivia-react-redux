@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import Header from '../components/Header';
-import { updateCorrectAnswers } from '../actions';
+// import { updateCorrectAnswers } from '../actions';
 
 class Feedback extends Component {
   componentDidMount() {
@@ -12,21 +12,18 @@ class Feedback extends Component {
   saveOnStorage = () => {
     const { name, score, picture } = this.props;
     const ranking = JSON.parse(localStorage.getItem('ranking')) || [];
-    console.log(ranking);
     const tempObj = {
       name,
       score,
       picture,
     };
     const newRanking = [...ranking, tempObj];
-    console.log(newRanking);
-    console.log(JSON.stringify(newRanking));
     localStorage.setItem('ranking', JSON.stringify(newRanking));
   }
 
   handlePlayAgainBtn = () => {
-    const { history, setAnsweredToZero } = this.props;
-    setAnsweredToZero(0);
+    const { history } = this.props;
+    // setAnsweredToZero(0);
     history.push('/');
   };
 
@@ -88,9 +85,9 @@ const mapStateToProps = (state) => ({
   picture: state.player.picture,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  setAnsweredToZero: (payload) => dispatch(updateCorrectAnswers(payload)),
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   setAnsweredToZero: (payload) => dispatch(updateCorrectAnswers(payload)),
+// });
 
 Feedback.propTypes = {
   assertions: PropTypes.number.isRequired,
@@ -100,7 +97,7 @@ Feedback.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
-  setAnsweredToZero: PropTypes.func.isRequired,
+  // setAnsweredToZero: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
+export default connect(mapStateToProps, null)(Feedback);
