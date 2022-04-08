@@ -3,20 +3,15 @@ import {
   ADD_LOGIN,
   ADD_GRAVATAR_PICTURE,
   UPDATE_SCORE,
-<<<<<<< HEAD
-  UPDATE_CORRECT_ANSWERS } from '../actions/index';
-=======
+  UPDATE_CORRECT_ANSWERS,
 } from '../actions/index';
->>>>>>> main-group-2
 
 const INITIAL_STATE = {
   name: '',
   assertions: 0,
   score: 0,
   gravatarEmail: '',
-  token: undefined,
   picture: '',
-  correctAnswers: 0,
 };
 
 export default function player(state = INITIAL_STATE, action) {
@@ -45,7 +40,7 @@ export default function player(state = INITIAL_STATE, action) {
   case UPDATE_CORRECT_ANSWERS:
     return {
       ...state,
-      correctAnswers: action.payload,
+      assertions: action.payload,
     };
   default:
     return state;
