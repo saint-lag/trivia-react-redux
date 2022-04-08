@@ -21,6 +21,7 @@ class Game extends Component {
       currentTime: 30,
       nextButton: false, // define se o botão next ficará visível para na tela
       redirectToFeedback: false,
+      arrayOfAnswers: [],
     };
     this.getGame = this.getGame.bind(this);
   }
@@ -32,10 +33,17 @@ class Game extends Component {
 
   async getGame(token) {
     const { results, response_code: responseCode } = await fetchGame(token);
-    console.log(`API response code: ${responseCode}`);
+    console.log(results);
     const validTokenCode = 0;
     if (responseCode === validTokenCode) {
-      this.setState({ gameQuestions: results });
+      const arrayOfAnswers = [];
+      console.log(this.randomNumber);
+      results.forEach((element, index) => {
+        const answers = [element.correct_answer, ...element.incorrect_answers];
+        arrayOfAnswers[index] = answers.sort(this.randomNumber);
+      });
+      console.log(arrayOfAnswers);
+      this.setState({ gameQuestions: results, arrayOfAnswers });
     } else { this.getToken(); }
   }
 
@@ -55,43 +63,52 @@ class Game extends Component {
     this.setState({ currentTime: time });
   }
 
-  checkAnswer = (userAnswer) => {
+  calculateAndUpdateScore = () => {
     const { gameQuestions, questionNumber, currentTime } = this.state;
-    const { correct_answer: correctAnswer } = gameQuestions[questionNumber];
-    const { updateScoreDispatch, assertions, defineNumberCorrectAnswer } = this.props;
+    const { updateScoreDispatch } = this.props;
     const scoreDefault = 10;
     const easy = 1;
     const medium = 2;
     const hard = 3;
-    if (userAnswer === correctAnswer) {
-      defineNumberCorrectAnswer(assertions + 1);
-      if (gameQuestions[questionNumber].difficulty === 'easy' && currentTime > 0) {
-        const scoreEasy = scoreDefault + (currentTime * easy);
-        updateScoreDispatch(scoreEasy);
-      }
-      if (gameQuestions[questionNumber].difficulty === 'medium' && currentTime > 0) {
-        const scoreMedium = scoreDefault + (currentTime * medium);
-        updateScoreDispatch(scoreMedium);
-      }
-      if (gameQuestions[questionNumber].difficulty === 'hard' && currentTime > 0) {
-        const scoreHard = scoreDefault + (currentTime * hard);
-        updateScoreDispatch(scoreHard);
-      }
+    let score = 0;
+    if (gameQuestions[questionNumber].difficulty === 'easy' && currentTime > 0) {
+      score = scoreDefault + (currentTime * easy);
+    } else if (gameQuestions[questionNumber].difficulty === 'medium' && currentTime > 0) {
+      score = scoreDefault + (currentTime * medium);
+    } else if (gameQuestions[questionNumber].difficulty === 'hard' && currentTime > 0) {
+      score = scoreDefault + (currentTime * hard);
     }
+    updateScoreDispatch(score);
+  }
+
+  handleEndOfAnswering = () => {
+    const { questionNumber, gameQuestions } = this.state;
     if (questionNumber === (gameQuestions.length - 1)) {
-      console.log('termina jogo');
       this.setState({
+        overTime: true,
         timerOn: false,
         questionAnswered: true,
         redirectToFeedback: true,
       });
     } else {
       this.setState({
+        overTime: true,
         timerOn: false,
         questionAnswered: true,
         nextButton: true,
       });
     }
+  }
+
+  checkAnswer = (userAnswer) => {
+    const { gameQuestions, questionNumber } = this.state;
+    const { correct_answer: correctAnswer } = gameQuestions[questionNumber];
+    const { assertions, defineNumberCorrectAnswer } = this.props;
+    if (userAnswer === correctAnswer) {
+      defineNumberCorrectAnswer(assertions + 1);
+      this.calculateAndUpdateScore();
+    }
+    this.handleEndOfAnswering();
   }
 
   clickNextButton = () => {
@@ -107,7 +124,6 @@ class Game extends Component {
 
   selectClass = (answer, correctAnswer) => {
     const { questionAnswered } = this.state;
-
     if (questionAnswered) {
       const className = answer === correctAnswer
         ? 'correct-answer'
@@ -117,32 +133,9 @@ class Game extends Component {
     return '';
   }
 
-  suffleArray = (incorrect, correct) => {
-    const answers = [...incorrect, correct]
-      .sort(this.randomNumber)
-      .sort(this.randomNumber);
-    return answers;
-  }
-
   isOverTime = (overTime) => {
-    const { questionNumber, gameQuestions } = this.state;
     if (overTime) {
-      if (questionNumber === (gameQuestions.length - 1)) {
-        console.log('termina jogo');
-        this.setState({
-          overTime: true,
-          timerOn: false,
-          questionAnswered: true,
-          redirectToFeedback: true,
-        });
-      } else {
-        this.setState({
-          overTime: true,
-          timerOn: false,
-          questionAnswered: true,
-          nextButton: true,
-        });
-      }
+      this.handleEndOfAnswering();
     }
   }
 
@@ -154,15 +147,8 @@ class Game extends Component {
       timerOn,
       nextButton,
       questionAnswered,
-      redirectToFeedback } = this.state;
-    let answers = [];
-    if (gameQuestions.length > 0) {
-      const {
-        incorrect_answers: incorrectAnswers,
-        correct_answer: correctAnswer } = gameQuestions[questionNumber];
-      answers = this.suffleArray(incorrectAnswers, correctAnswer);
-    }
-
+      redirectToFeedback,
+      arrayOfAnswers } = this.state;
     return (
       <div>
         {redirectToFeedback && <Redirect to="/feedback" />}
@@ -176,7 +162,7 @@ class Game extends Component {
               {gameQuestions[questionNumber].question}
             </h3>
             <div data-testid="answer-options">
-              {answers.map((answer, index) => (
+              {arrayOfAnswers[questionNumber].map((answer, index) => (
                 <button
                   key={ `answer${index}` }
                   type="button"
