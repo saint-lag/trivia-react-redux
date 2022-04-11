@@ -42,18 +42,32 @@ class Feedback extends Component {
       <>
         <Header />
         <main>
-          <h1 data-testid="feedback-text">{message}</h1>
-          <label htmlFor="total-score">
+          <h1 className="my-3" data-testid="feedback-text">
+            {message}
+          </h1>
+          <label className="mx-2" htmlFor="total-score">
             Sua pontuação:
-            <h2 id="total-score" data-testid="feedback-total-score">{ score }</h2>
+            <h2
+              className="mx-2"
+              id="total-score"
+              data-testid="feedback-total-score"
+            >
+              {score}
+            </h2>
           </label>
-          <label htmlFor="total-questions">
+          <label className="mx-2" htmlFor="total-questions">
             Você acertou:
-            <h2 id="total-questions" data-testid="feedback-total-question">
-              { assertions }
+            <h2
+              className="mx-2"
+              id="total-questions"
+              data-testid="feedback-total-question"
+            >
+              {assertions}
             </h2>
           </label>
           <button
+            style={ { backgroundColor: '#5a189a' } }
+            className="mx-1 btn btn-primary"
             type="button"
             data-testid="btn-play-again"
             onClick={ () => this.handlePlayAgainBtn() }
@@ -61,19 +75,22 @@ class Feedback extends Component {
             Play Again
           </button>
           <button
+            style={ { backgroundColor: '#0077b6' } }
+            className="mx-1 btn btn-primary"
             data-testid="btn-ranking"
             type="button"
             onClick={ () => this.handleClick() }
           >
             Ranking
           </button>
-          <button
+          {/* <button
+            className="mx-1 btn btn-secondary"
             type="button"
             data-testid="btn-next"
             // onClick={ setAnsweredToZero(0) }
           >
             Next
-          </button>
+          </button> */}
         </main>
       </>
     );

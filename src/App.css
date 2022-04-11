@@ -1,5 +1,8 @@
 .App {
-  background-color: #3c578d;
+
+  /* background-color: #3c578d; */
+  background-color: #dfdbe5;
+  background-image: linear-gradient(to top, #87c0f5 0%, #051367 100%);
   min-height: 100vh;
   text-align: center;
 }

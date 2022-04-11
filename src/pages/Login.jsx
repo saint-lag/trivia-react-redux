@@ -83,6 +83,8 @@ class Login extends React.Component {
             />
 
             <button
+              style={ { backgroundColor: '#5a189a',
+  } }
               className="btn btn-primary btn-lg  mx-1"
               data-testid="btn-play"
               type="button"
@@ -95,7 +97,10 @@ class Login extends React.Component {
         </main>
         <footer>
           <button
-            className="btn btn-secondary btn-lg  mx-1"
+            style={ {
+      backgroundColor: '#0077b6',
+    } }
+            className="btn btn-primary btn-lg  mx-1"
             type="button"
             data-testid="btn-settings"
             onClick={ this.handleClickButtonSettings }

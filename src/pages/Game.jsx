@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
+import { decode } from 'he';
 import fetchGame from '../services/fetchGame';
 import searchTokenAPI from '../services/searchTokenApi';
 import { addToken, updateScore, updateCorrectAnswers } from '../actions';
@@ -157,11 +158,11 @@ class Game extends Component {
           {gameQuestions.length > 0 && (
             <div>
               <h2 data-testid="question-category">
-                {gameQuestions[questionNumber].category}
+                {decode(gameQuestions[questionNumber].category)}
               </h2>
-              <p data-testid="question-text">
-                {gameQuestions[questionNumber].question}
-              </p>
+              <h3 data-testid="question-text">
+                {decode(gameQuestions[questionNumber].question)}
+              </h3>
               <div data-testid="answer-options">
                 {arrayOfAnswers[questionNumber].map((answer, index) => (
                   <button
