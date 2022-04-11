@@ -39,10 +39,7 @@ class Timer extends React.Component {
   render() {
     const { time } = this.state;
     return (
-      <>
-        {' '}
-        <h2>{time}</h2>
-      </>
+      <h2 className="mt-3">{time}</h2>
     );
   }
 }

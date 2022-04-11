@@ -126,11 +126,11 @@ class Game extends Component {
     const { questionAnswered } = this.state;
     if (questionAnswered) {
       const className = answer === correctAnswer
-        ? 'correct-answer'
-        : 'wrong-answer';
+        ? 'mx-1 btn btn-success'
+        : 'mx-1 btn btn-danger';
       return className;
     }
-    return '';
+    return 'mx-1 btn btn-light';
   }
 
   isOverTime = (overTime) => {
@@ -194,6 +194,7 @@ class Game extends Component {
               </div>
               {nextButton && (
                 <button
+                  className="my-3 btn btn-secondary"
                   type="button"
                   data-testid="btn-next"
                   onClick={ this.clickNextButton }

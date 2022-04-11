@@ -19,9 +19,8 @@ class Login extends React.Component {
 
   handleChange = ({ target }) => {
     const { name, value } = target;
-    this.setState({ [name]: value },
-      () => this.validate());
-  }
+    this.setState({ [name]: value }, () => this.validate());
+  };
 
   validate = () => {
     const { name, gravatarEmail } = this.state;
@@ -36,35 +35,37 @@ class Login extends React.Component {
         buttonDisable: true,
       });
     }
-  }
+  };
 
-    handleClick = async () => {
-      const token = await searchTokenAPI();
-      // console.log(await searchTokenAPI());
-      const { history, updateToken, updatePlayer, updatePicture } = this.props;
-      const { gravatarEmail, name } = this.state;
-      const payload = { gravatarEmail, name };
+  handleClick = async () => {
+    const token = await searchTokenAPI();
+    // console.log(await searchTokenAPI());
+    const { history, updateToken, updatePlayer, updatePicture } = this.props;
+    const { gravatarEmail, name } = this.state;
+    const payload = { gravatarEmail, name };
 
-      const picture = fetchGravatarPicture(gravatarEmail);
+    const picture = fetchGravatarPicture(gravatarEmail);
 
-      updatePicture(picture);
-      updateToken(token);
-      updatePlayer(payload);
-      history.push('/game');
-    }
+    updatePicture(picture);
+    updateToken(token);
+    updatePlayer(payload);
+    history.push('/game');
+  };
 
-    handleClickButtonSettings = () => {
-      const { history } = this.props;
-      history.push('/settings');
-    }
+  handleClickButtonSettings = () => {
+    const { history } = this.props;
+    history.push('/settings');
+  };
 
-    render() {
-      const { name, gravatarEmail, buttonDisable } = this.state;
-      // console.log(this.props);
-      return (
+  render() {
+    const { name, gravatarEmail, buttonDisable } = this.state;
+    // console.log(this.props);
+    return (
+      <>
         <main>
-          <form>
+          <form className="d-grid gap-3">
             <input
+              className=" form-control"
               data-testid="input-player-name"
               name="name"
               placeholder="Nome de Usuário"
@@ -73,6 +74,7 @@ class Login extends React.Component {
             />
 
             <input
+              className="form-control"
               data-testid="input-gravatar-email"
               name="gravatarEmail"
               placeholder="E-mail"
@@ -81,6 +83,7 @@ class Login extends React.Component {
             />
 
             <button
+              className="btn btn-primary btn-lg  mx-1"
               data-testid="btn-play"
               type="button"
               onClick={ this.handleClick }
@@ -88,18 +91,21 @@ class Login extends React.Component {
             >
               Play
             </button>
-            <button
-              type="button"
-              data-testid="btn-settings"
-              onClick={ this.handleClickButtonSettings }
-            >
-              Configurações
-            </button>
-
           </form>
         </main>
-      );
-    }
+        <footer>
+          <button
+            className="btn btn-secondary btn-lg  mx-1"
+            type="button"
+            data-testid="btn-settings"
+            onClick={ this.handleClickButtonSettings }
+          >
+            Configurações
+          </button>
+        </footer>
+      </>
+    );
+  }
 }
 
 const mapDispatchToProps = (dispatch) => ({

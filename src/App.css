@@ -1,5 +1,5 @@
 .App {
-  background-color: #282c34;
+  background-color: #3c578d;
   min-height: 100vh;
   text-align: center;
 }
@@ -17,6 +17,20 @@
   border: 1px solid green;
 }
 
+form {
+  margin: 0 auto;
+  width: 225px;
+}
+
+footer {
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 50px;
+  position: fixed;
+  width: 100%;
+}
+
 @media ( prefers-reduced-motion : no-preference ) {
 
   .App-logo {
@@ -26,12 +40,12 @@
 
 .App-header {
   align-items: center;
-  /* background-color: #282c34; */
   color: white;
   display: flex;
   flex-direction: column;
   font-size: calc(10px + 2vmin);
   justify-content: center;
+  margin-bottom: 100px;
   min-height: 50vh;
   z-index: 1;
 }
