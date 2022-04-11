@@ -41,38 +41,40 @@ class Feedback extends Component {
     return (
       <>
         <Header />
-        <h1 data-testid="feedback-text">{message}</h1>
-        <label htmlFor="total-score">
-          Sua pontuação:
-          <h2 id="total-score" data-testid="feedback-total-score">{ score }</h2>
-        </label>
-        <label htmlFor="total-questions">
-          Você acertou:
-          <h2 id="total-questions" data-testid="feedback-total-question">
-            { assertions }
-          </h2>
-        </label>
-        <button
-          type="button"
-          data-testid="btn-play-again"
-          onClick={ () => this.handlePlayAgainBtn() }
-        >
-          Play Again
-        </button>
-        <button
-          data-testid="btn-ranking"
-          type="button"
-          onClick={ () => this.handleClick() }
-        >
-          Ranking
-        </button>
-        <button
-          type="button"
-          data-testid="btn-next"
-          // onClick={ setAnsweredToZero(0) }
-        >
-          Next
-        </button>
+        <main>
+          <h1 data-testid="feedback-text">{message}</h1>
+          <label htmlFor="total-score">
+            Sua pontuação:
+            <h2 id="total-score" data-testid="feedback-total-score">{ score }</h2>
+          </label>
+          <label htmlFor="total-questions">
+            Você acertou:
+            <h2 id="total-questions" data-testid="feedback-total-question">
+              { assertions }
+            </h2>
+          </label>
+          <button
+            type="button"
+            data-testid="btn-play-again"
+            onClick={ () => this.handlePlayAgainBtn() }
+          >
+            Play Again
+          </button>
+          <button
+            data-testid="btn-ranking"
+            type="button"
+            onClick={ () => this.handleClick() }
+          >
+            Ranking
+          </button>
+          <button
+            type="button"
+            data-testid="btn-next"
+            // onClick={ setAnsweredToZero(0) }
+          >
+            Next
+          </button>
+        </main>
       </>
     );
   }

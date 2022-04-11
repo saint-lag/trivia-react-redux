@@ -150,59 +150,61 @@ class Game extends Component {
       redirectToFeedback,
       arrayOfAnswers } = this.state;
     return (
-      <div>
+      <>
         {redirectToFeedback && <Redirect to="/feedback" />}
         <Header />
-        {gameQuestions.length > 0 && (
-          <div>
-            <h2 data-testid="question-category">
-              {gameQuestions[questionNumber].category}
-            </h2>
-            <h3 data-testid="question-text">
-              {gameQuestions[questionNumber].question}
-            </h3>
-            <div data-testid="answer-options">
-              {arrayOfAnswers[questionNumber].map((answer, index) => (
+        <main>
+          {gameQuestions.length > 0 && (
+            <div>
+              <h2 data-testid="question-category">
+                {gameQuestions[questionNumber].category}
+              </h2>
+              <p data-testid="question-text">
+                {gameQuestions[questionNumber].question}
+              </p>
+              <div data-testid="answer-options">
+                {arrayOfAnswers[questionNumber].map((answer, index) => (
+                  <button
+                    key={ `answer${index}` }
+                    type="button"
+                    onClick={ () => this.checkAnswer(answer) }
+                    data-testid={
+                      answer === gameQuestions[questionNumber].correct_answer
+                        ? 'correct-answer'
+                        : `wrong-answer-${gameQuestions[
+                          questionNumber
+                        ].incorrect_answers.indexOf(answer)}`
+                    }
+                    disabled={ overTime || questionAnswered }
+                    className={ this.selectClass(
+                      answer,
+                      gameQuestions[questionNumber].correct_answer,
+                    ) }
+                  >
+                    {answer}
+                  </button>
+                ))}
+                {!nextButton && (
+                  <Timer
+                    isOverTime={ this.isOverTime }
+                    timerOn={ timerOn }
+                    getTime={ this.getTime }
+                  />
+                )}
+              </div>
+              {nextButton && (
                 <button
-                  key={ `answer${index}` }
                   type="button"
-                  onClick={ () => this.checkAnswer(answer) }
-                  data-testid={
-                    answer === gameQuestions[questionNumber].correct_answer
-                      ? 'correct-answer'
-                      : `wrong-answer-${gameQuestions[
-                        questionNumber
-                      ].incorrect_answers.indexOf(answer)}`
-                  }
-                  disabled={ overTime || questionAnswered }
-                  className={ this.selectClass(
-                    answer,
-                    gameQuestions[questionNumber].correct_answer,
-                  ) }
+                  data-testid="btn-next"
+                  onClick={ this.clickNextButton }
                 >
-                  {answer}
+                  Next
                 </button>
-              ))}
-              {!nextButton && (
-                <Timer
-                  isOverTime={ this.isOverTime }
-                  timerOn={ timerOn }
-                  getTime={ this.getTime }
-                />
               )}
             </div>
-            {nextButton && (
-              <button
-                type="button"
-                data-testid="btn-next"
-                onClick={ this.clickNextButton }
-              >
-                Next
-              </button>
-            )}
-          </div>
-        )}
-      </div>
+          )}
+        </main>
+      </>
     );
   }
 }
