@@ -62,40 +62,42 @@ class Login extends React.Component {
       const { name, gravatarEmail, buttonDisable } = this.state;
       // console.log(this.props);
       return (
-        <form>
-          <input
-            data-testid="input-player-name"
-            name="name"
-            placeholder="Nome de Usuário"
-            onChange={ this.handleChange }
-            value={ name }
-          />
+        <main>
+          <form>
+            <input
+              data-testid="input-player-name"
+              name="name"
+              placeholder="Nome de Usuário"
+              onChange={ this.handleChange }
+              value={ name }
+            />
 
-          <input
-            data-testid="input-gravatar-email"
-            name="gravatarEmail"
-            placeholder="E-mail"
-            onChange={ this.handleChange }
-            value={ gravatarEmail }
-          />
+            <input
+              data-testid="input-gravatar-email"
+              name="gravatarEmail"
+              placeholder="E-mail"
+              onChange={ this.handleChange }
+              value={ gravatarEmail }
+            />
 
-          <button
-            data-testid="btn-play"
-            type="button"
-            onClick={ this.handleClick }
-            disabled={ buttonDisable }
-          >
-            Play
-          </button>
-          <button
-            type="button"
-            data-testid="btn-settings"
-            onClick={ this.handleClickButtonSettings }
-          >
-            Configurações
-          </button>
+            <button
+              data-testid="btn-play"
+              type="button"
+              onClick={ this.handleClick }
+              disabled={ buttonDisable }
+            >
+              Play
+            </button>
+            <button
+              type="button"
+              data-testid="btn-settings"
+              onClick={ this.handleClickButtonSettings }
+            >
+              Configurações
+            </button>
 
-        </form>
+          </form>
+        </main>
       );
     }
 }
