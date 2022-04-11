@@ -127,8 +127,8 @@ class Game extends Component {
     const { questionAnswered } = this.state;
     if (questionAnswered) {
       const className = answer === correctAnswer
-        ? 'mx-1 btn btn-success'
-        : 'mx-1 btn btn-danger';
+        ? 'mx-1 btn btn-success correct-answer'
+        : 'mx-1 btn btn-danger wrong-answer';
       return className;
     }
     return 'mx-1 btn btn-light';
